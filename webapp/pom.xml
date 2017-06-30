@@ -11,5 +11,6 @@
   <modules>
     <module>libExample01</module>
     <module>appExample01</module>
+    <module>appExample02</module>
   </modules>
 </project>
