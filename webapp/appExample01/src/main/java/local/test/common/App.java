@@ -1,4 +1,4 @@
-package com.mkyong.common;
+package local.test.common;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

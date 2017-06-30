@@ -8,13 +8,13 @@ machine:
 dependencies:
   override:
     - echo ${CIRCLE_BUILD_NUM}
-    - mvn -B -f webapp/SpringExample/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true
+    - mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true
 
 test:
   override:
     - echo "No Test"
     - # pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-    - ls -al webapp/SpringExample/target/*.jar
+    - ls -al webapp/target
 
 deployment:
   staging:
@@ -23,7 +23,7 @@ deployment:
       - echo "1.0.0 deployment"
       - git clone https://github.com/public-test-circleci/module-all.git
       - cd module-all && git checkout release/1.0.0
-      - cp -f webapp/SpringExample/target/*.jar module-all/webapp/
+      - cp -f webapp/target/*.war module-all/webapp/
       - cd module-all && git config --global user.email li@exgen.co.jp
       - cd module-all && git config --global user.name li-exgen
       - cd module-all && git commit -am "deploy from CircleCI(CIRCLE_BUILD_NUM:${CIRCLE_BUILD_NUM})"
