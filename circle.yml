@@ -22,7 +22,7 @@ test:
 
 deployment:
   staging:
-    branch: develop/${BUILD_VERSION}
+    branch: /develop\/.*/
     commands:
       - echo "${BUILD_VERSION} deployment"
       - git clone https://github.com/public-test-circleci/module-all.git
