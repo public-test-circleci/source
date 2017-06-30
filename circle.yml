@@ -12,10 +12,12 @@ dependencies:
 
 test:
   override:
-    - echo "No Test(copy war)"
+    - echo "No Test(copy webapp war)"
     - # pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
     - ls -al webapp/appExample01/target
     - cp webapp/appExample01/target/appExample01.war webapp/target/
+    - ls -al webapp/appExample02/target
+    - cp webapp/appExample02/target/appExample01.war webapp/target/
 
 deployment:
   staging:
