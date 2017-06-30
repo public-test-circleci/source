@@ -46,7 +46,7 @@ test:
       fi
 
     # webapp1 copy war
-    - if[[ ${BUILD_WEBAPP1} = "true" ]];
+    - if [[ ${BUILD_WEBAPP1} = "true" ]];
       then
         echo "copy webapp1 war";
         cp webapp1/app1Example01/target/app1Example01.war webapp1/target/;
