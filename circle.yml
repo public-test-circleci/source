@@ -16,43 +16,83 @@ machine:
 dependencies:
   override:
     # webapp maven build
-    - if test "${BUILD_WEBAPP}" = "true"; then mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true; else echo "skip command"; fi
+    - if [[ ${BUILD_WEBAPP} = "true" ]];
+      then
+        mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
+      else
+        echo "skip command";
+      fi
 
     # webapp1 maven build
-    - if test "${BUILD_WEBAPP1}" = "true"; then mvn -B -f webapp1/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true; else echo "skip command"; fi
+    - if [[ ${BUILD_WEBAPP1} = "true" ]];
+      then
+        mvn -B -f webapp1/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
+      else
+        echo "skip command";
+      fi
 
 test:
   override:
     - echo "No Test"
 
     # webapp copy war
-    - if test "${BUILD_WEBAPP}" = "true"; then echo "copy webapp war"; else echo "skip command"; fi
-    - if test "${BUILD_WEBAPP}" = "true"; then cp webapp/appExample01/target/appExample01.war webapp/target/; else echo "skip command"; fi
-    - if test "${BUILD_WEBAPP}" = "true"; then cp webapp/appExample02/target/appExample02.war webapp/target/; else echo "skip command"; fi
+    - if [[ ${BUILD_WEBAPP} = "true" ]];
+      then
+        echo "copy webapp war";
+        cp webapp/appExample01/target/appExample01.war webapp/target/;
+        cp webapp/appExample02/target/appExample02.war webapp/target/;
+      else
+        echo "skip command";
+      fi
 
     # webapp1 copy war
-    - if test "${BUILD_WEBAPP1}" = "true"; then echo "copy webapp1 war"; else echo "skip command"; fi
-    - if test "${BUILD_WEBAPP1}" = "true"; then cp webapp1/app1Example01/target/app1Example01.war webapp1/target/; else echo "skip command"; fi
-    - if test "${BUILD_WEBAPP1}" = "true"; then cp webapp1/app1Example02/target/app1Example02.war webapp1/target/; else echo "skip command"; fi
+    - if[[ ${BUILD_WEBAPP1} = "true" ]];
+      then
+        echo "copy webapp1 war";
+        cp webapp1/app1Example01/target/app1Example01.war webapp1/target/;
+        cp webapp1/app1Example02/target/app1Example02.war webapp1/target/;
+      else
+        echo "skip command";
+      fi
 
 deployment:
   staging:
     branch: /develop\/.*/
     commands:
       - echo "${BUILD_VERSION} deployment"
-      - git clone https://github.com/public-test-circleci/module-all.git
-      - cd module-all && git checkout release/${BUILD_VERSION}
+      - if [[ ${BUILD_WEBAPP} = "true" && ${BUILD_WEBAPP1} = "true" ]];
+        then
+          git clone https://github.com/public-test-circleci/module-all.git;
+          cd module-all && git checkout release/${BUILD_VERSION};
+        else
+          echo "skip command";
+        fi
 
       # webapp deployment
-      - if test "${BUILD_WEBAPP}" = "true"; then cp -f webapp/target/*.war module-all/webapp/; else echo "skip command"; fi
+      - if [[ ${BUILD_WEBAPP} = "true" ]];
+        then
+          cp -f webapp/target/*.war module-all/webapp/;
+        else
+          echo "skip command";
+        fi
 
       # webapp1 deployment
-      - if test "${BUILD_WEBAPP1}" = "true"; then cp -f webapp1/target/*.war module-all/webapp1/; else echo "skip command"; fi
+      - if [[ ${BUILD_WEBAPP1} = "true" ]];
+        then
+          cp -f webapp1/target/*.war module-all/webapp1/;
+        else
+          echo "skip command";
+        fi
 
-      - cd module-all && git config --global user.email li@exgen.co.jp
-      - cd module-all && git config --global user.name li-exgen
-      - cd module-all && git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})"
-      - cd module-all && git push origin release/${BUILD_VERSION}
+      - if [[ ${BUILD_WEBAPP} = "true" && ${BUILD_WEBAPP1} = "true" ]];
+        then
+          cd module-all && git config --global user.email li@exgen.co.jp;
+          cd module-all && git config --global user.name li-exgen;
+          cd module-all && git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
+          cd module-all && git push origin release/${BUILD_VERSION};
+        else
+          echo "skip command";
+        fi
 
 general:
   branches:
