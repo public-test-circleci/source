@@ -21,7 +21,7 @@ deployment:
     branch: develop/1.0.0
     commands:
       - echo "1.0.0 deployment"
-      - git clone https://github.com/li-exgen/module.git
+      - git clone https://github.com/public-test-circleci/module-all.git
       - cd module && git checkout release/1.0.0
       - cp -f webapp/SpringExample/target/*.jar module/webapp/
       - cd module && git config --global user.email li@exgen.co.jp
