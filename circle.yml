@@ -17,7 +17,7 @@ test:
     - ls -al webapp/appExample01/target
     - cp webapp/appExample01/target/appExample01.war webapp/target/
     - ls -al webapp/appExample02/target
-    - cp webapp/appExample02/target/appExample01.war webapp/target/
+    - cp webapp/appExample02/target/appExample02.war webapp/target/
 
 deployment:
   staging:
