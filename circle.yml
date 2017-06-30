@@ -1,24 +1,39 @@
 machine:
-  environment:
-    BUILD_VERSION:
-      1.0.0
-    BUILD_TARGET:
-      webapp
   timezone:
     Asia/Tokyo
   java:
-    version:
-      openjdk8
+    version: openjdk8
+  environment:
+    # branch version
+    BUILD_VERSION: 1.0.0
+
+    # webapp build flag
+    BUILD_WEBAPP: false
+
+    # webapp1 build flag
+    BUILD_WEBAPP1: true
 
 dependencies:
   override:
-    - mvn -B -f ${BUILD_TARGET}/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true
+    # webapp maven build
+    - if test "${BUILD_WEBAPP}" = "true"; then mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true; fi
+
+    # webapp1 maven build
+    - if test "${BUILD_WEBAPP1}" = "true"; then mvn -B -f webapp1/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true; fi
 
 test:
   override:
-    - echo "No Test(copy ${BUILD_TARGET} war)"
-    - cp ${BUILD_TARGET}/appExample01/target/appExample01.war ${BUILD_TARGET}/target/
-    - cp ${BUILD_TARGET}/appExample02/target/appExample02.war ${BUILD_TARGET}/target/
+    - echo "No Test"
+
+    # webapp copy war
+    - if test "${BUILD_WEBAPP}" = "true"; then echo "copy webapp war"; fi
+    - if test "${BUILD_WEBAPP}" = "true"; then cp webapp/appExample01/target/appExample01.war webapp/target/; fi
+    - if test "${BUILD_WEBAPP}" = "true"; then cp webapp/appExample02/target/appExample02.war webapp/target/; fi
+
+    # webapp1 copy war
+    - if test "${BUILD_WEBAPP1}" = "true"; then echo "copy webapp1 war"; fi
+    - if test "${BUILD_WEBAPP1}" = "true"; then cp webapp1/app1Example01/target/app1Example01.war webapp1/target/; fi
+    - if test "${BUILD_WEBAPP1}" = "true"; then cp webapp1/app1Example02/target/app1Example02.war webapp1/target/; fi
 
 deployment:
   staging:
@@ -27,7 +42,13 @@ deployment:
       - echo "${BUILD_VERSION} deployment"
       - git clone https://github.com/public-test-circleci/module-all.git
       - cd module-all && git checkout release/${BUILD_VERSION}
-      - cp -f ${BUILD_TARGET}/target/*.war module-all/${BUILD_TARGET}/
+
+      # webapp deployment
+      - if test "${BUILD_WEBAPP}" = "true"; then cp -f webapp/target/*.war module-all/webapp/; fi
+
+      # webapp1 deployment
+      - if test "${BUILD_WEBAPP1}" = "true"; then cp -f webapp1/target/*.war module-all/webapp1/; fi
+
       - cd module-all && git config --global user.email li@exgen.co.jp
       - cd module-all && git config --global user.name li-exgen
       - cd module-all && git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})"
