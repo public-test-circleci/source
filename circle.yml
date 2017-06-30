@@ -36,4 +36,4 @@ deployment:
 general:
   branches:
     only:
-      - develop/*
+      - /develop\/.*/
