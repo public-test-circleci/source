@@ -22,12 +22,12 @@ deployment:
     commands:
       - echo "1.0.0 deployment"
       - git clone https://github.com/public-test-circleci/module-all.git
-      - cd module && git checkout release/1.0.0
-      - cp -f webapp/SpringExample/target/*.jar module/webapp/
-      - cd module && git config --global user.email li@exgen.co.jp
-      - cd module && git config --global user.name li-exgen
-      - cd module && git commit -am "deploy from CircleCI(CIRCLE_BUILD_NUM:${CIRCLE_BUILD_NUM})"
-      - cd module && git push origin release/1.0.0
+      - cd module-all && git checkout release/1.0.0
+      - cp -f webapp/SpringExample/target/*.jar module-all/webapp/
+      - cd module-all && git config --global user.email li@exgen.co.jp
+      - cd module-all && git config --global user.name li-exgen
+      - cd module-all && git commit -am "deploy from CircleCI(CIRCLE_BUILD_NUM:${CIRCLE_BUILD_NUM})"
+      - cd module-all && git push origin release/1.0.0
 
 general:
   branches:
