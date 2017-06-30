@@ -1,4 +1,4 @@
-package com.mkyong.common;
+package local.test.common;
 
 /**
  * Hello world!
