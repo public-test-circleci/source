@@ -1,4 +1,9 @@
 machine:
+  environment:
+    BUILD_VERSION:
+      1.0.0
+    BUILD_TARGET:
+      webapp
   timezone:
     Asia/Tokyo
   java:
@@ -7,32 +12,28 @@ machine:
 
 dependencies:
   override:
-    - echo ${CIRCLE_BUILD_NUM}
-    - mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true
+    - mvn -B -f ${BUILD_TARGET}/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true
 
 test:
   override:
-    - echo "No Test(copy webapp war)"
-    - # pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-    - ls -al webapp/appExample01/target
-    - cp webapp/appExample01/target/appExample01.war webapp/target/
-    - ls -al webapp/appExample02/target
-    - cp webapp/appExample02/target/appExample02.war webapp/target/
+    - echo "No Test(copy ${BUILD_TARGET} war)"
+    - cp ${BUILD_TARGET}/appExample01/target/appExample01.war ${BUILD_TARGET}/target/
+    - cp ${BUILD_TARGET}/appExample02/target/appExample02.war ${BUILD_TARGET}/target/
 
 deployment:
   staging:
-    branch: develop/1.0.0
+    branch: /develop\/.*/
     commands:
-      - echo "1.0.0 deployment"
+      - echo "${BUILD_VERSION} deployment"
       - git clone https://github.com/public-test-circleci/module-all.git
-      - cd module-all && git checkout release/1.0.0
-      - cp -f webapp/target/*.war module-all/webapp/
+      - cd module-all && git checkout release/${BUILD_VERSION}
+      - cp -f ${BUILD_TARGET}/target/*.war module-all/${BUILD_TARGET}/
       - cd module-all && git config --global user.email li@exgen.co.jp
       - cd module-all && git config --global user.name li-exgen
-      - cd module-all && git commit -am "deploy from CircleCI(CIRCLE_BUILD_NUM:${CIRCLE_BUILD_NUM})"
-      - cd module-all && git push origin release/1.0.0
+      - cd module-all && git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})"
+      - cd module-all && git push origin release/${BUILD_VERSION}
 
 general:
   branches:
     only:
-      - develop/1.0.0
+      - /develop\/.*/
