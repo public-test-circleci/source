@@ -63,7 +63,8 @@ deployment:
       - if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
         then
           git clone https://github.com/public-test-circleci/module-all.git;
-          cd module-all && git checkout release/${BUILD_VERSION};
+          cd module-all;
+          git checkout release/${BUILD_VERSION};
         else
           echo "skip command";
         fi
@@ -86,10 +87,11 @@ deployment:
 
       - if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
         then
-          cd module-all && git config --global user.email "";
-          cd module-all && git config --global user.name ${CIRCLE_USERNAME};
-          cd module-all && git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
-          cd module-all && git push origin release/${BUILD_VERSION};
+          cd module-all;
+          git config --global user.email "";
+          git config --global user.name ${CIRCLE_USERNAME};
+          git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
+          git push origin release/${BUILD_VERSION};
         else
           echo "skip command";
         fi
