@@ -8,7 +8,7 @@ machine:
     BUILD_VERSION: 1.0.0
 
     # webapp build flag
-    BUILD_WEBAPP: false
+    BUILD_WEBAPP: true
 
     # webapp1 build flag
     BUILD_WEBAPP1: false
@@ -60,7 +60,7 @@ deployment:
     branch: /develop\/.*/
     commands:
       - echo "${BUILD_VERSION} deployment"
-      - if [[ ${BUILD_WEBAPP} = "true" && ${BUILD_WEBAPP1} = "true" ]];
+      - if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
         then
           git clone https://github.com/public-test-circleci/module-all.git;
           cd module-all && git checkout release/${BUILD_VERSION};
@@ -84,10 +84,10 @@ deployment:
           echo "skip command";
         fi
 
-      - if [[ ${BUILD_WEBAPP} = "true" && ${BUILD_WEBAPP1} = "true" ]];
+      - if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
         then
-          cd module-all && git config --global user.email li@exgen.co.jp;
-          cd module-all && git config --global user.name li-exgen;
+          cd module-all && git config --global user.email "";
+          cd module-all && git config --global user.name ${CIRCLE_USERNAME};
           cd module-all && git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
           cd module-all && git push origin release/${BUILD_VERSION};
         else
