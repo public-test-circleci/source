@@ -80,20 +80,19 @@ jobs:
             # webapp deployment
             if [[ ${BUILD_WEBAPP} = "true" ]];
             then
-              cp -f webapp/target/*.war module-all/webapp/;
+              cp -f ~/${CIRCLE_PROJECT_REPONAME}/webapp/target/*.war webapp/;
             else
               echo "skip command";
             fi
             # webapp1 deployment
             if [[ ${BUILD_WEBAPP1} = "true" ]];
             then
-              cp -f webapp1/target/*.war module-all/webapp1/;
+              cp -f ~/${CIRCLE_PROJECT_REPONAME}/webapp1/target/*.war webapp1/;
             else
               echo "skip command";
             fi
             if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
             then
-              cd module-all;
               git config --global user.email "";
               git config --global user.name ${CIRCLE_USERNAME};
               git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
