@@ -10,10 +10,10 @@ jobs:
       BUILD_VERSION: "1.0.0"
 
       # webapp build flag
-      BUILD_WEBAPP: "true"
+      BUILD_WEBAPP: "false"
 
       # webapp1 build flag
-      BUILD_WEBAPP1: "true"
+      BUILD_WEBAPP1: "false"
 
     working_directory: ~/source-all
 
