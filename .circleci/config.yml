@@ -1,0 +1,94 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8u131-jdk
+
+    environment:
+      TZ: "/usr/share/zoneinfo/Asia/Tokyo"
+      # branch version
+      BUILD_VERSION: "1.0.0"
+
+      # webapp build flag
+      BUILD_WEBAPP: "true"
+
+      # webapp1 build flag
+      BUILD_WEBAPP1: "true"
+
+    working_directory: ~/source-all
+
+    branches:
+      only:
+        - /develop\/.*/
+
+    steps:
+      - checkout
+
+      - run: 
+          name: webapp-build
+          command: |
+            if [[ ${BUILD_WEBAPP} = "true" ]];
+            then
+              mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
+            else
+              echo "skip webapp-build";
+            fi
+
+      - run: 
+          name: webapp1-build
+          command: |
+            if [[ ${BUILD_WEBAPP1} = "true" ]];
+            then
+              mvn -B -f webapp1/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
+            else
+              echo "skip webapp1-build";
+            fi
+
+      - run: 
+          name: module-checkout
+          command: |
+            if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
+            then
+              git clone https://github.com/public-test-circleci/module-all.git;
+              cd module-all;
+              git checkout release/${BUILD_VERSION};
+              cd ..;
+            else
+              echo "skip module-checkout";
+            fi
+
+      - run: 
+          name: webapp-module-copy
+          command: |
+            if [[ ${BUILD_WEBAPP} = "true" ]];
+            then
+              cp webapp/appExample01/target/appExample01.war module-all/webapp/;
+              cp webapp/appExample02/target/appExample02.war module-all/webapp/;
+            else
+              echo "skip webapp-module-copy";
+            fi
+
+      - run: 
+          name: webapp1-module-copy
+          command: |
+            if [[ ${BUILD_WEBAPP1} = "true" ]];
+            then
+              cp webapp1/app1Example01/target/app1Example01.war module-all/webapp1/;
+              cp webapp1/app1Example02/target/app1Example02.war module-all/webapp1/;
+            else
+              echo "skip webapp1-module-copy";
+            fi
+
+      - run: 
+          name: module-deploy
+          command: |
+            if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
+            then
+              cd module-all;
+              git config --global user.email ${CIRCLE_USERNAME}@local.test;
+              git config --global user.name ${CIRCLE_USERNAME};
+              git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
+              git push origin release/${BUILD_VERSION};
+            else
+              echo "skip module-deploy";
+            fi
