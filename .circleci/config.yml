@@ -26,7 +26,7 @@ jobs:
 
       - run: 
         name: webapp-build
-        command: |
+        command:
           if [[ ${BUILD_WEBAPP} = "true" ]];
           then
             mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
@@ -36,7 +36,7 @@ jobs:
 
       - run: 
         name: webapp1-build
-        command: |
+        command:
           if [[ ${BUILD_WEBAPP1} = "true" ]];
           then
             mvn -B -f webapp1/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
@@ -46,7 +46,7 @@ jobs:
 
       - run: 
         name: webapp-copy-war
-        command: |
+        command:
           if [[ ${BUILD_WEBAPP} = "true" ]];
           then
             cp webapp/appExample01/target/appExample01.war webapp/target/;
@@ -57,7 +57,7 @@ jobs:
 
       - run: 
         name: webapp1-copy-war
-        command: |
+        command:
           if [[ ${BUILD_WEBAPP1} = "true" ]];
           then
             cp webapp1/app1Example01/target/app1Example01.war webapp1/target/;
@@ -105,8 +105,8 @@ jobs:
             echo "skip command";
           fi
 
-workflows:
-  version: 2
-  build_and_deploy:
-    jobs:
-      - build
+# workflows:
+#   version: 2
+#   build_and_deploy:
+#     jobs:
+#       - build
