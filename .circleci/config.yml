@@ -13,7 +13,7 @@ jobs:
       BUILD_WEBAPP: "true"
 
       # webapp1 build flag
-      BUILD_WEBAPP1: "false"
+      BUILD_WEBAPP1: "true"
 
     working_directory: ~/source-all
 
@@ -66,7 +66,8 @@ jobs:
               echo "skip webapp1-copy-war";
             fi
 
-      - deploy:
+      - run: 
+          name: deploy
           command: |
             echo "${BUILD_VERSION} deployment"
             if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
@@ -100,9 +101,3 @@ jobs:
             else
               echo "skip git commit and push";
             fi
-
-# workflows:
-#   version: 2
-#   build_and_deploy:
-#     jobs:
-#       - build
