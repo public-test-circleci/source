@@ -45,59 +45,50 @@ jobs:
             fi
 
       - run: 
-          name: webapp-copy-war
+          name: module-checkout
           command: |
-            if [[ ${BUILD_WEBAPP} = "true" ]];
-            then
-              cp webapp/appExample01/target/appExample01.war webapp/target/;
-              cp webapp/appExample02/target/appExample02.war webapp/target/;
-            else
-              echo "skip webapp-copy-war";
-            fi
-
-      - run: 
-          name: webapp1-copy-war
-          command: |
-            if [[ ${BUILD_WEBAPP1} = "true" ]];
-            then
-              cp webapp1/app1Example01/target/app1Example01.war webapp1/target/;
-              cp webapp1/app1Example02/target/app1Example02.war webapp1/target/;
-            else
-              echo "skip webapp1-copy-war";
-            fi
-
-      - run: 
-          name: deploy
-          command: |
-            echo "${BUILD_VERSION} deployment"
             if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
             then
               git clone https://github.com/public-test-circleci/module-all.git;
               cd module-all;
               git checkout release/${BUILD_VERSION};
+              cd ..;
             else
-              echo "skip git clone and checkout";
+              echo "skip module-checkout";
             fi
-            # webapp deployment
+
+      - run: 
+          name: webapp-module-copy
+          command: |
             if [[ ${BUILD_WEBAPP} = "true" ]];
             then
-              cp -f ~/${CIRCLE_PROJECT_REPONAME}/webapp/target/*.war webapp/;
+              cp webapp/appExample01/target/appExample01.war module-all/webapp/;
+              cp webapp/appExample02/target/appExample02.war module-all/webapp/;
             else
-              echo "skip copy webapp";
+              echo "skip webapp-module-copy";
             fi
-            # webapp1 deployment
+
+      - run: 
+          name: webapp1-module-copy
+          command: |
             if [[ ${BUILD_WEBAPP1} = "true" ]];
             then
-              cp -f ~/${CIRCLE_PROJECT_REPONAME}/webapp1/target/*.war webapp1/;
+              cp webapp1/app1Example01/target/app1Example01.war module-all/webapp1/;
+              cp webapp1/app1Example02/target/app1Example02.war module-all/webapp1/;
             else
-              echo "skip copy webapp1";
+              echo "skip webapp1-module-copy";
             fi
+
+      - run: 
+          name: module-deploy
+          command: |
             if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
             then
+              cd module-all;
               git config --global user.email ${CIRCLE_USERNAME}@local.test;
               git config --global user.name ${CIRCLE_USERNAME};
               git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
               git push origin release/${BUILD_VERSION};
             else
-              echo "skip git commit and push";
+              echo "skip module-deploy";
             fi
