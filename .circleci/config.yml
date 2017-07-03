@@ -75,30 +75,30 @@ jobs:
               cd module-all;
               git checkout release/${BUILD_VERSION};
             else
-              echo "skip command";
+              echo "skip git clone and checkout";
             fi
             # webapp deployment
             if [[ ${BUILD_WEBAPP} = "true" ]];
             then
               cp -f ~/${CIRCLE_PROJECT_REPONAME}/webapp/target/*.war webapp/;
             else
-              echo "skip command";
+              echo "skip copy webapp";
             fi
             # webapp1 deployment
             if [[ ${BUILD_WEBAPP1} = "true" ]];
             then
               cp -f ~/${CIRCLE_PROJECT_REPONAME}/webapp1/target/*.war webapp1/;
             else
-              echo "skip command";
+              echo "skip copy webapp1";
             fi
             if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
             then
-              git config --global user.email "";
+              git config --global user.email ${CIRCLE_USERNAME}@local.test;
               git config --global user.name ${CIRCLE_USERNAME};
               git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
               git push origin release/${BUILD_VERSION};
             else
-              echo "skip command";
+              echo "skip git commit and push";
             fi
 
 # workflows:
