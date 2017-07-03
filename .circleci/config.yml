@@ -67,7 +67,7 @@ jobs:
             fi
 
       - deploy:
-        commands: |
+        command: |
           echo "${BUILD_VERSION} deployment"
           if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
           then
