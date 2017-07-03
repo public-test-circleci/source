@@ -25,46 +25,46 @@ jobs:
       - checkout
 
       - run: 
-        name: webapp-build
-        command: |
-          if [[ ${BUILD_WEBAPP} = "true" ]];
-          then
-            mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
-          else
-            echo "skip webapp-build";
-          fi
+          name: webapp-build
+          command: |
+            if [[ ${BUILD_WEBAPP} = "true" ]];
+            then
+              mvn -B -f webapp/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
+            else
+              echo "skip webapp-build";
+            fi
 
       - run: 
-        name: webapp1-build
-        command: |
-          if [[ ${BUILD_WEBAPP1} = "true" ]];
-          then
-            mvn -B -f webapp1/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
-          else
-            echo "skip webapp1-build";
-          fi
+          name: webapp1-build
+          command: |
+            if [[ ${BUILD_WEBAPP1} = "true" ]];
+            then
+              mvn -B -f webapp1/pom.xml clean package findbugs:findbugs pmd:pmd -Dbuild.number=${CIRCLE_BUILD_NUM} -Pdeploy -Dmaven.test.skip=true;
+            else
+              echo "skip webapp1-build";
+            fi
 
       - run: 
-        name: webapp-copy-war
-        command: |
-          if [[ ${BUILD_WEBAPP} = "true" ]];
-          then
-            cp webapp/appExample01/target/appExample01.war webapp/target/;
-            cp webapp/appExample02/target/appExample02.war webapp/target/;
-          else
-            echo "skip webapp-copy-war";
-          fi
+          name: webapp-copy-war
+          command: |
+            if [[ ${BUILD_WEBAPP} = "true" ]];
+            then
+              cp webapp/appExample01/target/appExample01.war webapp/target/;
+              cp webapp/appExample02/target/appExample02.war webapp/target/;
+            else
+              echo "skip webapp-copy-war";
+            fi
 
       - run: 
-        name: webapp1-copy-war
-        command: |
-          if [[ ${BUILD_WEBAPP1} = "true" ]];
-          then
-            cp webapp1/app1Example01/target/app1Example01.war webapp1/target/;
-            cp webapp1/app1Example02/target/app1Example02.war webapp1/target/;
-          else
-            echo "skip webapp1-copy-war";
-          fi
+          name: webapp1-copy-war
+          command: |
+            if [[ ${BUILD_WEBAPP1} = "true" ]];
+            then
+              cp webapp1/app1Example01/target/app1Example01.war webapp1/target/;
+              cp webapp1/app1Example02/target/app1Example02.war webapp1/target/;
+            else
+              echo "skip webapp1-copy-war";
+            fi
 
       - deploy:
         commands: |
@@ -77,7 +77,6 @@ jobs:
           else
             echo "skip command";
           fi
-
           # webapp deployment
           if [[ ${BUILD_WEBAPP} = "true" ]];
           then
@@ -85,7 +84,6 @@ jobs:
           else
             echo "skip command";
           fi
-
           # webapp1 deployment
           if [[ ${BUILD_WEBAPP1} = "true" ]];
           then
@@ -93,7 +91,6 @@ jobs:
           else
             echo "skip command";
           fi
-
           if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
           then
             cd module-all;
