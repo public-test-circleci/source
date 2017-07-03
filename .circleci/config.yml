@@ -104,3 +104,9 @@ jobs:
            else
              echo "skip command";
            fi
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
