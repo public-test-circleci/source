@@ -80,7 +80,7 @@ jobs:
 
   cpp:
     docker:
-      - image: microsoft/aspnetcore-build:1.0.1-msbuild
+      - image: microsoft/aspnetcore-build:1.1.2-jessie
 
     environment:
       TZ: "/usr/share/zoneinfo/Asia/Tokyo"
