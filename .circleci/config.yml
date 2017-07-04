@@ -8,6 +8,7 @@ workflows:
       # - webapp
       # - webapp1
       - cpp
+      - csharp
 
 defaults: &defaults
     docker:
@@ -80,7 +81,7 @@ jobs:
 
   cpp:
     docker:
-      - image: microsoft/aspnetcore-build:1.1.2-jessie
+      - image: microsoft/dotnet:1.0.5-sdk-jessie
 
     environment:
       TZ: "/usr/share/zoneinfo/Asia/Tokyo"
@@ -95,14 +96,55 @@ jobs:
       - checkout
 
       - run: 
-          name: build
+          name: build1
           command: |
             cd native-cpp
-            dotnet restore
-            dotnet publish -c Release -o ./bin/Release/PublishOutput
+            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
 
       - run: 
-          name: test
+          name: build2
           command: |
+            dotnet restore
+            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
+
+      - run: 
+          name: build3
+          command: |
+            dotnet msbuild /t:Rebuild /p:Configuration=Release
+            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
+
+
+  csharp:
+    docker:
+      - image: microsoft/dotnet:1.0.5-sdk-jessie
+
+    environment:
+      TZ: "/usr/share/zoneinfo/Asia/Tokyo"
+
+    working_directory: ~/source-all
+
+    branches:
+      only:
+        - /develop\/.*/
+
+    steps:
+      - checkout
+
+      - run: 
+          name: build1
+          command: |
+            cd native-csharp
+            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
+
+      - run: 
+          name: build2
+          command: |
+            dotnet restore
+            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
+
+      - run: 
+          name: build3
+          command: |
+            dotnet msbuild /t:Rebuild /p:Configuration=Release
             pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
 
