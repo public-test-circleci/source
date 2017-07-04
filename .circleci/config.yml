@@ -96,21 +96,10 @@ jobs:
       - checkout
 
       - run: 
-          name: build1
+          name: build
           command: |
             cd native-cpp
-            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-
-      - run: 
-          name: build2
-          command: |
-            dotnet restore native-cpp/Lambda_VS2013.sln
-            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-
-      - run: 
-          name: build3
-          command: |
-            dotnet msbuild /t:Rebuild /p:Configuration=Release native-cpp/Lambda_VS2013.sln
+            dotnet msbuild /t:Rebuild /p:Configuration=Release Lambda_VS2013.sln
             pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
 
 
@@ -131,20 +120,9 @@ jobs:
       - checkout
 
       - run: 
-          name: build1
+          name: build
           command: |
             cd native-csharp
-            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-
-      - run: 
-          name: build2
-          command: |
-            dotnet restore MethodHidingInCSharp.sln
-            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-
-      - run: 
-          name: build3
-          command: |
             dotnet msbuild /t:Rebuild /p:Configuration=Release MethodHidingInCSharp.sln
             pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
 
