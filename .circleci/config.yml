@@ -1,14 +1,9 @@
-
-
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-      # - build
-      # - webapp
-      # - webapp1
-      - cpp
-      - csharp
+      - webapp
+      - webapp1
 
 defaults: &defaults
     docker:
@@ -24,7 +19,6 @@ defaults: &defaults
     branches:
       only:
         - /develop\/.*/
-
 
 version: 2
 jobs:
@@ -78,51 +72,3 @@ jobs:
             git config --global user.name ${CIRCLE_USERNAME}
             git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})"
             git push origin release/${BUILD_VERSION}
-
-  cpp:
-    docker:
-      - image: microsoft/dotnet:1.0.5-sdk-jessie
-
-    environment:
-      TZ: "/usr/share/zoneinfo/Asia/Tokyo"
-
-    working_directory: ~/source-all
-
-    branches:
-      only:
-        - /develop\/.*/
-
-    steps:
-      - checkout
-
-      - run: 
-          name: build
-          command: |
-            cd native-cpp
-            dotnet msbuild /t:Rebuild /p:Configuration=Release Lambda_VS2013.sln
-            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-
-
-  csharp:
-    docker:
-      - image: microsoft/dotnet:1.0.5-sdk-jessie
-
-    environment:
-      TZ: "/usr/share/zoneinfo/Asia/Tokyo"
-
-    working_directory: ~/source-all
-
-    branches:
-      only:
-        - /develop\/.*/
-
-    steps:
-      - checkout
-
-      - run: 
-          name: build
-          command: |
-            cd native-csharp
-            dotnet msbuild /t:Rebuild /p:Configuration=Release MethodHidingInCSharp.sln
-            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
-
