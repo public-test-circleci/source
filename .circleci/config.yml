@@ -92,3 +92,32 @@ jobs:
             else
               echo "skip module-deploy";
             fi
+
+  build-cpp:
+    docker:
+      - image: microsoft/aspnetcore-build:1.1-msbuild
+
+    environment:
+      TZ: "/usr/share/zoneinfo/Asia/Tokyo"
+
+    working_directory: ~/source-all
+
+    branches:
+      only:
+        - /develop\/.*/
+
+    steps:
+      - checkout
+
+      - run: 
+          name: build-cpp
+          command: |
+            cd native-cpp
+            dotnet restore
+            dotnet publish -c Release -o ./bin/Release/PublishOutput
+
+      - run: 
+          name: test
+          command: |
+            pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'
+
