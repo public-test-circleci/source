@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>local.test</groupId>
   <artifactId>webapp1</artifactId>
-  <version>1.0</version>
+  <version>2.4</version>
   <packaging>pom</packaging>
   <name>webapp1</name>
   <url>http://maven.apache.org</url>
