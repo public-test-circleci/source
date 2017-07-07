@@ -8,7 +8,7 @@ jobs:
       TZ: "/usr/share/zoneinfo/Asia/Tokyo"
 
       # branch version
-      BUILD_VERSION: "2.3.0"
+      BUILD_VERSION: "2.4.0"
 
       # webapp build flag
       BUILD_WEBAPP: "true"
