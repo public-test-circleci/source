@@ -1,6 +1,6 @@
 package local.test.common;
 
 public class Constant {
-	public static final String NAME_PREFIX = "test-"; //$NON-NLS-1$
+	public static final String PREFIX = "test-"; //$NON-NLS-1$
 
 }
