@@ -8,7 +8,7 @@ jobs:
       TZ: "/usr/share/zoneinfo/Asia/Tokyo"
 
       # branch version
-      BUILD_VERSION: "2.2.2"
+      BUILD_VERSION: "2.3.0"
 
       # webapp build flag
       BUILD_WEBAPP: "true"
@@ -70,7 +70,7 @@ jobs:
             if [[ ${BUILD_WEBAPP} = "true" || ${BUILD_WEBAPP1} = "true" ]];
             then
               cd module-all;
-              git config --global user.email ${CIRCLE_USERNAME}@local.test;
+              git config --global user.email nobody@nodomain;
               git config --global user.name ${CIRCLE_USERNAME};
               git commit -am "deploy from CircleCI(Number:${CIRCLE_BUILD_NUM})";
               git push origin release/${BUILD_VERSION};
