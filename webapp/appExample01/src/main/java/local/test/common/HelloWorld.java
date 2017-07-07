@@ -26,22 +26,22 @@ public class HelloWorld
 	}
 
 	public void printHello1() {
-		System.out.println("Hello1 ! " + name);
+		System.out.println("Hello1 !! " + name);
 	}
 
 	public void printHello2() {
-		System.out.println("Hello2 ! " + name);
+		System.out.println("Hello2 !! " + name);
 	}
 
 	public void printHello3() {
-		System.out.println("Hello3 ! " + name);
+		System.out.println("Hello3 !! " + name);
 	}
 
 	public void printHello4() {
-		System.out.println("Hello4 ! " + name);
+		System.out.println("Hello4 !! " + name);
 	}
 
 	public void printHello5() {
-		System.out.println("Hello5 ! " + name);
+		System.out.println("Hello5 !! " + name);
 	}
 }
