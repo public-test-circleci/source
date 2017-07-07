@@ -13,6 +13,6 @@ public class HelloWorld4
 	}
 
 	public void printHello4() {
-		System.out.println("Hello4 ! " + name);
+		System.out.println("Hello4 !! " + name);
 	}
 }
