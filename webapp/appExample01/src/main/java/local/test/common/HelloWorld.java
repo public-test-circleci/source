@@ -4,14 +4,14 @@ package local.test.common;
  * Hello world!
  *
  */
-public class HelloWorld 
+public class HelloWorld
 {
 	private String name;
-	
+
 	public void setName(String name) {
-		this.name = name;
+		this.name = Constant.NAME_PREFIX + name;
 	}
-	
+
 	public void printHello() {
 		System.out.println("Hello ! " + name);
 	}
