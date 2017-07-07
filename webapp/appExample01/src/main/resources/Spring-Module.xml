@@ -7,4 +7,24 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 		<property name="name" value="circle test" />
 	</bean>
 
+	<bean id="helloBean1" class="com.mkyong.common.HelloWorld1">
+		<property name="name" value="circle test" />
+	</bean>
+
+	<bean id="helloBean2" class="com.mkyong.common.HelloWorld2">
+		<property name="name" value="circle test" />
+	</bean>
+
+	<bean id="helloBean3" class="com.mkyong.common.HelloWorld3">
+		<property name="name" value="circle test" />
+	</bean>
+
+	<bean id="helloBean4" class="com.mkyong.common.HelloWorld4">
+		<property name="name" value="circle test" />
+	</bean>
+
+	<bean id="helloBean5" class="com.mkyong.common.HelloWorld5">
+		<property name="name" value="circle test" />
+	</bean>
+
 </beans>
