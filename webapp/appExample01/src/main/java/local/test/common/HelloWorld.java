@@ -18,7 +18,7 @@ public class HelloWorld
 	}
 
 	public void printHello() {
-		System.out.println("Hello ! " + name + " of the" + group);
+		System.out.println("Hello !! " + name + " of the" + group);
 	}
 
 	public void printPrefix() {
