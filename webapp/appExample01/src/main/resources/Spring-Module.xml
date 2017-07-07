@@ -5,6 +5,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="helloBean" class="com.mkyong.common.HelloWorld">
 		<property name="name" value="circle test" />
+		<property name="group" value="public" />
 	</bean>
 
 </beans>
