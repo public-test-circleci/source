@@ -15,4 +15,8 @@ public class HelloWorld
 	public void printHello() {
 		System.out.println("Hello ! " + name);
 	}
+
+	public void printPrefix() {
+		System.out.println("prefix : " + Constant.NAME_PREFIX);
+	}
 }
