@@ -4,7 +4,7 @@ package local.test.common;
  * Hello world!
  *
  */
-public class HelloWorld
+public class HelloWorld3
 {
 	private String name;
 
@@ -12,7 +12,7 @@ public class HelloWorld
 		this.name = name;
 	}
 
-	public void printHello() {
-		System.out.println("Hello !! " + name);
+	public void printHello3() {
+		System.out.println("Hello3 !! " + name);
 	}
 }
