@@ -4,7 +4,7 @@
   <groupId>local.test.webapp</groupId>
   <artifactId>appExample02</artifactId>
   <packaging>war</packaging>
-  <version>2.3.0</version>
+  <version>2.3.1</version>
   <name>appExample02</name>
 
   <dependencies>
@@ -26,7 +26,7 @@
 	<dependency>
 		<groupId>local.test.webapp</groupId>
 		<artifactId>libExample01</artifactId>
-		<version>2.3.0</version>
+		<version>2.3.1</version>
 	</dependency>
   </dependencies>
 	<build>
