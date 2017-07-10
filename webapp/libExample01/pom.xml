@@ -4,7 +4,7 @@
   <groupId>local.test.webapp</groupId>
   <artifactId>libExample01</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>2.3.1</version>
   <name>libExample01</name>
 
   <dependencies>
@@ -54,6 +54,6 @@
 	<parent>
 		<groupId>local.test</groupId>
 		<artifactId>webapp</artifactId>
-		<version>1.0</version>
+		<version>2.3</version>
 	</parent>
 </project>
